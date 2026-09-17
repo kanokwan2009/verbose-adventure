@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pixel Harvest RPG</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Canvas หลักของเกม -->
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- UI ชั้นบนสุด -->
+        <div id="ui-layer">
+            <!-- HUD ด้านบน -->
+            <div id="hud-top" class="hidden">
+                <div class="hud-group">
+                    <span id="hud-time">06:00</span>
+                    <span id="hud-date">Spring 1 (Y1)</span>
+                    <span id="hud-weather">☀️ Sunny</span>
+                </div>
+                <div class="hud-group">
+                    <span id="hud-gold">💰 500G</span>
+                    <div class="bar-container">
+                        <span>HP</span>
+                        <div class="bar"><div id="hp-fill" class="fill"></div></div>
+                    </div>
+                    <div class="bar-container">
+                        <span>EN</span>
+                        <div class="bar"><div id="energy-fill" class="fill"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- เมนูด้านบนขวา -->
+            <div id="hud-buttons" class="hidden">
+                <button class="ui-btn" onclick="game.toggleWindow('inventory')">🎒 (I)</button>
+                <button class="ui-btn" onclick="game.toggleWindow('wardrobe')">👕 (C)</button>
+                <button class="ui-btn" onclick="game.toggleWindow('quest')">📜 (Q)</button>
+                <button class="ui-btn" onclick="game.toggleWindow('map')">🗺️ (M)</button>
+                <button class="ui-btn" onclick="game.saveGame()">💾 Save</button>
+            </div>
+
+            <!-- Hotbar ด้านล่าง -->
+            <div id="hotbar" class="hidden">
+                <!-- สร้างผ่าน JS -->
+            </div>
+
+            <!-- หน้าจอ Main Menu -->
+            <div id="screen-menu" class="screen">
+                <h1 class="game-title">Pixel Harvest RPG</h1>
+                <p class="game-subtitle">A Cozy Farming & Adventure Experience</p>
+                <div class="menu-buttons">
+                    <button class="main-btn" onclick="game.startNewGame()">New Game</button>
+                    <button class="main-btn" onclick="game.loadGame()" id="btn-load" style="display:none;">Load Game</button>
+                </div>
+            </div>
+
+            <!-- หน้าจอ Character Creator -->
+            <div id="screen-creator" class="screen hidden">
+                <h2>Character Creator</h2>
+                <div class="creator-container">
+                    <div class="creator-preview">
+                        <canvas id="creatorCanvas" width="128" height="128"></canvas>
+                    </div>
+                    <div class="creator-controls">
+                        <label>Gender/Base: <select id="c-gender" onchange="game.updateCreator()"><option value="m">Male</option><option value="f">Female</option></select></label>
+                        <label>Hair Style: <input type="range" id="c-hair" min="1" max="3" value="1" oninput="game.updateCreator()"></label>
+                        <label>Hair Color: <input type="color" id="c-haircolor" value="#8B4513" onchange="game.updateCreator()"></label>
+                        <label>Skin Color: <input type="color" id="c-skin" value="#ffd1b3" onchange="game.updateCreator()"></label>
+                        <label>Shirt Color: <input type="color" id="c-shirt" value="#3498db" onchange="game.updateCreator()"></label>
+                        <label>Pants Color: <input type="color" id="c-pants" value="#2c3e50" onchange="game.updateCreator()"></label>
+                        <button class="main-btn" onclick="game.randomizeCreator()">Randomize</button>
+                        <button class="main-btn primary" onclick="game.finishCharacterCreation()">Start Journey</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- หน้าต่างรวม (Inventory / Wardrobe / Quest / Map) -->
+            <div id="window-modal" class="modal hidden">
+                <div class="modal-content">
+                    <button class="close-btn" onclick="game.closeWindow()">×</button>
+                    <div id="modal-body"></div>
+                </div>
+            </div>
+
+            <!-- กล่องข้อความ Dialogue / Shop / Sleep -->
+            <div id="dialogue-box" class="hidden">
+                <div id="dialogue-speaker">Speaker</div>
+                <div id="dialogue-text">Text content...</div>
+                <button onclick="game.advanceDialogue()">Next ></button>
+            </div>
+
+            <!-- ปุ่มมือถือ / Touch Controls -->
+            <div id="touch-controls" class="hidden">
+                <div id="virtual-joystick">
+                    <div id="joystick-knob"></div>
+                </div>
+                <div id="action-buttons">
+                    <button class="touch-btn" id="btn-action" onclick="game.handleAction()">Action</button>
+                    <button class="touch-btn" id="btn-tool" onclick="game.handleTool()">Tool</button>
+                    <button class="touch-btn" id="btn-menu" onclick="game.toggleWindow('inventory')">Inv</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
